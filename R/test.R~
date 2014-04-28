@@ -1,0 +1,184 @@
+
+library(Rhipe)
+rhinit()
+
+
+
+rhput("/home/bikash/jar/r2time.jar", "/home/bikash/tmp/r2time.jar")
+rhput("/home/bikash/builds/testR/RhipeHbaseMozilla/src/rhipehbaseinputn.jar" , "/home/bikash/tmp/rhipehbaseinput.jar")
+
+library(rJava)
+library(caTools)
+
+
+
+source("/home/bikash/builds/testR/r2time/R/convertType.R")
+
+.jaddClassPath(c("/home/bikash/jar/r2time.jar"))
+
+r2t.init() 
+
+tagk = c("1", "host")
+#tagv = c("1","foo|bikash")
+tagv = c("1","bikash")
+a<-r2t.getRowkeyFilter('2013/06/07-12:00:00', '2013/06/07-12:30:00','proc.loadavg.1m',as.array(tagk),as.array(tagv))
+
+row1<-.jcall("org.apache.commons.codec.binary.Base64","[B","decodeBase64",a[1]);
+row2<-.jcall("org.apache.commons.codec.binary.Base64","[B","decodeBase64",a[2]);
+
+
+r2t.getBaseTimestamp(row1)
+r2t.getBaseTimestamp(row2)
+
+a
+
+
+
+options(width=200)
+
+
+hbaseif <- function(table, colspec=NULL, rows=NULL,caching=3L, cacheBlocks=TRUE,autoReduceDetect=FALSE ,  jars="" ,zooinfo, filter = "", batch = 1L){
+  makeRaw <- function(a){
+    #a <- if(is.character(a)) charToRaw(a)
+   # if(!is.raw(a)) stop("rows must be raw")
+    J("org.apache.commons.codec.binary.Base64")$encodeBase64String(.jbyte( a  ))
+  }
+  table <- eval(table); colspec <- eval(colspec);rows <- eval(rows);cacheBlocks <- eval(cacheBlocks)
+  autoReduceDetect <- eval(autoReduceDetect)
+  caching <- eval(caching)
+  function(mapred,direction, callers){
+	
+
+      if(is.null(table)) stop("Please provide table type e.g. tsdb")
+      mapred$rhipe.hbase.tablename <- as.character(table[1])
+      mapred$rhipe.hbase.colspec <-NULL
+      if(!is.null(rows)){
+        mapred$rhipe.hbase.rowlim.start <- makeRaw(rows[[1]])
+        mapred$rhipe.hbase.rowlim.end   <- makeRaw(rows[[2]])
+      }
+	mapred$rhipe.hbase.filter   <- filter
+	mapred$rhipe.hbase.set.batch   <- batch		
+mapred$parse.ifolder='';
+      mapred$rhipe.hbase.mozilla.cacheblocks <- sprintf("%s:%s",as.integer(caching),as.integer(cacheBlocks))
+  mapred$zookeeper.znode.parent <- zooinfo$"zookeeper.znode.parent"
+      mapred$hbase.zookeeper.quorum <- zooinfo$"hbase.zookeeper.quorum"
+      message(sprintf("Using %s table", table))
+    
+      mapred$rhipe.hbase.dateformat <- "yyyyMMdd"
+      mapred$rhipe.hbase.mozilla.prefix <-  "byteprefix" 
+      mapred$rhipe_inputformat_class <- 'RHHBaseGeneral'
+      mapred$rhipe_inputformat_keyclass <- 'org.godhuli.rhipe.RHBytesWritable'
+      mapred$rhipe_inputformat_valueclass <- 'RHResult'
+      mapred$jarfiles <- jars
+      mapred
+    
+  }
+}
+
+
+
+
+
+hbaseinput <- function(table, colspec=NULL, rows=NULL,caching=3L, cacheBlocks=TRUE,autoReduceDetect=FALSE ,  jars="" ,zooinfo, filter = "", batch = 1L){
+  makeRaw <- function(a){
+    #a <- if(is.character(a)) charToRaw(a)
+   # if(!is.raw(a)) stop("rows must be raw")
+    J("org.apache.commons.codec.binary.Base64")$encodeBase64String(.jbyte( a  ))
+  }
+  table <- eval(table); colspec <- eval(colspec);rows <- eval(rows);cacheBlocks <- eval(cacheBlocks)
+  autoReduceDetect <- eval(autoReduceDetect)
+  caching <- eval(caching)
+  function(mapred,direction, callers){
+	
+
+      if(is.null(table)) stop("Please provide table type e.g. tsdb")
+      mapred$rhipe.hbase.tablename <- as.character(table[1])
+      mapred$rhipe.hbase.colspec <-NULL
+      if(!is.null(rows)){
+        mapred$rhipe.hbase.rowlim.start <- makeRaw(rows[[1]])
+        mapred$rhipe.hbase.rowlim.end   <- makeRaw(rows[[2]])
+      }
+	mapred$rhipe.hbase.filter   <- filter
+	mapred$rhipe.hbase.set.batch   <- batch		
+mapred$parse.ifolder='';
+      mapred$rhipe.hbase.mozilla.cacheblocks <- sprintf("%s:%s",as.integer(caching),as.integer(cacheBlocks))
+  mapred$zookeeper.znode.parent <- zooinfo$"zookeeper.znode.parent"
+      mapred$hbase.zookeeper.quorum <- zooinfo$"hbase.zookeeper.quorum"
+      message(sprintf("Using %s table", table))
+    
+      mapred$rhipe.hbase.dateformat <- "yyyyMMdd"
+      mapred$rhipe.hbase.mozilla.prefix <-  "byteprefix" 
+      mapred$rhipe_inputformat_class <- 'RHHBaseGeneral'
+      mapred$rhipe_inputformat_keyclass <- 'org.godhuli.rhipe.RHBytesWritable'
+      mapred$rhipe_inputformat_valueclass <- 'RHResult'
+      mapred$jarfiles <- jars
+      mapred
+    
+  }
+}
+
+
+
+
+
+############ REDUCE Function################################
+r <- expression(
+	 pre={
+      		globalmax <- NULL
+   	},
+   	reduce={
+      	globalmax <- max(globalmax, unlist(reduce.values))
+  	 },
+   	post={
+      	rhcollect(reduce.key, globalmax)
+  	 }
+	)
+
+### Map function to calculate mean. At frist it will convert all byte array in to float point, then it will calculate mean rowwise, Then finally overall mean.
+map1 <- expression({
+	 library(rJava)
+	 library(bitops)
+	 source("/home/bikash/builds/testR/r2time/R/convertType.R") 
+	r2t.init(r2timeJar="/home/bikash/jar/r2time.jar")
+	
+	val <- lapply(seq_along(map.keys),function(i){
+		v <-  map.values[[i]]			
+         	m.1 <- lapply(seq_along(v), function(i) { 
+			k.1 <- v[[i]]								
+			m.2 <- lapply(seq_along(k.1), function(j) { 								 
+  				p <- as.numeric(r2t.toFloat(k.1[[j]]))			
+			})				
+	    	} )
+		#m.4 <- max(unlist(m.1))					
+		#return (as.numeric(m.4))	
+     	})
+	#max <- max(unlist(val))
+        #k = map.keys[[1]] 
+	#rhcollect(1, max)	
+    	
+}) 
+
+result <- rhwatch(map=map1
+                       ,reduce=0
+                       ,input=hbaseinput(table="tsdb"
+			,colspec=""
+			,rows=list(row1,row2)
+			,jars=c("/home/bikash/tmp/rhipehbaseinput.jar", "/home/bikash/tmp/r2time.jar", "/home/bikash/tmp/hbase-0.90.5.jar","/home/bikash/tmp/zookeeper-3.3.2.jar","/home/bikash/tmp/commons-codec-1.4.jar","/home/bikash/tmp/libjvm.so")
+			,zooinfo=list(zookeeper.znode.parent='/hbase',hbase.zookeeper.quorum='localhost')
+			,filter = a[3]
+			,batch = 10000)
+			,output = '/home/bikash/builds/test/hbase/ex2.1'
+			,jobname = 'General Mean Calculation'	
+               	        ,param     = list(beginningOflastMonth = Sys.Date()-45)		   
+                  )
+
+
+z<-rhread( '/home/bikash/builds/test/hbase/ex2.1')
+
+
+
+
+z
+
+
+
