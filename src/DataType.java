@@ -99,10 +99,8 @@ public class DataType {
     /* Constructor for initilization of tsdb */
 	public DataType() throws MasterNotRunningException,
 			ZooKeeperConnectionException {
-		//_cfg = HBaseConfiguration.create();
-		//_admin = new HBaseAdmin(_cfg);
-		tsdb = new TSDB(new HBaseClient(HBASE_CLIENT),
-				Const.DATA_TABLE, Const.LOOKUP_TABLE);
+//		tsdb = new TSDB(new HBaseClient(HBASE_CLIENT),
+//				Const.DATA_TABLE, Const.LOOKUP_TABLE);
 		REXP.Builder returnvalue = REXP.newBuilder();
 		returnvalue.setRclass(REXP.RClass.NULLTYPE);
 		anull = returnvalue.build();
@@ -113,7 +111,8 @@ public class DataType {
 
 	public void setHbaseClient(String host) {
 		this.HBASE_CLIENT = host;
-	
+		tsdb = new TSDB(new HBaseClient(HBASE_CLIENT),
+				Const.DATA_TABLE, Const.LOOKUP_TABLE);	
 	}
 	
 	public void setConf(Configuration conf) {
@@ -453,8 +452,6 @@ public class DataType {
 			// Skip any number of tags.
 			buf.append("(?:.{").append(tagsize).append("})*\\Q");
 			if (isTagNext(name_width, tag, group_by)) {
-				// System.out.println("\n Filter in================ "
-				// +org.apache.hadoop.hbase.util.Bytes.toStringBinary(tag));
 				addId(buf, tag);
 				tag = tags.hasNext() ? tags.next() : null;
 			} else { // Add a group_by.
@@ -481,21 +478,10 @@ public class DataType {
 			}
 		} while (tag != group_by); // Stop when they both become null.
 		// Skip any number of tags before the end.
-		// System.out.println("\n Filter================ " +buf.toString());
 		buf.append("(?:.{").append(tagsize).append("})*$");
-		System.out.println("\n Filter================ "
-				+ Bytes.toStringBinary(Bytes.toBytes(buf.toString())));
-		String filter1 = Bytes.toStringBinary(Bytes.toBytes(buf.toString()));
-		// KeyRegexp filter = new KeyRegexp(buf.toString(), CHARSET);
-		// scan.setFilter(filter);
+		//String filter1 = Bytes.toStringBinary(Bytes.toBytes(buf.toString()));
 		return buf;
 
-		/*
-		 * ScanFilter filter = new KeyRegexpFilter(buf.toString());
-		 * LOG.info(" FILTER " +filter.toString());
-		 * System.out.println("\n Filter in================ "
-		 * +filter.toString()); scanner.setFilter(filter);
-		 */
 	}
 
 	public void setTimeSeries(final String metric,
@@ -1037,7 +1023,4 @@ public class DataType {
 
 	/***************************************************************************************************/
 
-	
-	
-	
 }

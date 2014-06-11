@@ -13,11 +13,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.text.SimpleDateFormat;
-
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,10 +24,6 @@ import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
-import org.apache.hadoop.hbase.filter.CompareFilter;
-import org.apache.hadoop.hbase.filter.RegexStringComparator;
-import org.apache.hadoop.hbase.filter.RowFilter;
-import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.mapreduce.TableSplit;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.util.Pair;
@@ -41,11 +32,7 @@ import org.apache.hadoop.mapreduce.JobContext;
 import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.util.StringUtils;
-
-
 import org.godhuli.rhipe.RHRaw;
-import java.text.ParseException;
-
 
 public class RHScanTable  extends org.apache.hadoop.mapreduce.InputFormat<RHRaw, RHResult> 
     implements Configurable {
@@ -57,21 +44,14 @@ public class RHScanTable  extends org.apache.hadoop.mapreduce.InputFormat<RHRaw,
 	public static byte[][][] CFQ;
 	/** Job parameter that specifies the input table. */
 	public static final String INPUT_TABLE = "rhipe.hbase.tablename";
-	
 
-	
 	/************SET BATCH for better performance****************/
 	public static final String batch = "rhipe.hbase.set.batch";
-	
-	
-
-	
+		
 	private Configuration conf = null;
 	private HTable table = null;
 	private Scan[] scans = null;
 	private TableRecordReader trr = null;
-	
-	
 	
 	/* (non-Javadoc)
 	 * @see org.apache.hadoop.mapreduce.InputFormat#createRecordReader(org.apache.hadoop.mapreduce.InputSplit, org.apache.hadoop.mapreduce.TaskAttemptContext)
@@ -120,7 +100,7 @@ public class RHScanTable  extends org.apache.hadoop.mapreduce.InputFormat<RHRaw,
 		Set<InputSplit> splits = new HashSet<InputSplit>();
 		for (int i = 0; i < keys.getFirst().length; i++) {
 			String regionLocation = table.getRegionLocation(keys.getFirst()[i]).getServerAddress().getHostname();
-			LOG.info("Split length  " + keys.getFirst().length);
+			//LOG.info("Split length  " + keys.getFirst().length);
 			for (Scan s : scans) {
 				byte[] startRow = s.getStartRow();
 				byte[] stopRow = s.getStopRow();
@@ -131,18 +111,10 @@ public class RHScanTable  extends org.apache.hadoop.mapreduce.InputFormat<RHRaw,
 					byte[] splitStart = startRow.length == 0 || Bytes.compareTo(keys.getFirst()[i], startRow) >= 0 ? keys.getFirst()[i]	: startRow;
 					byte[] splitStop = (stopRow.length == 0 || Bytes.compareTo(keys.getSecond()[i], stopRow) <= 0) 
 										&& keys.getSecond()[i].length > 0 ? keys.getSecond()[i] : stopRow;					
-										//LOG.info("Start Split now " +  Bytes.toStringBinary(splitStart));	
-										//LOG.info("Start stop now " +   Bytes.toStringBinary(splitStop));
-										//System.out.println("\n================" + Bytes.toLong(splitStart,0));
-										//System.out.println("\n================" + splitStart.length);
-									    //LOG.info("  Start row-***-   " +Bytes.toLong(startRow,0));
-										//LOG.info("  End row-***-   " +Bytes.toLong(stopRow,0));
 								
 					InputSplit split = new TableSplit(table.getTableName(), splitStart, splitStop, regionLocation);
 					LOG.info("the current regionInfo's startKey is :"+Bytes.toStringBinary(splitStart)+"  , the current regionInfo's endkey is : "+Bytes.toStringBinary(splitStop) + "  , the current regionInfo's table is "+Bytes.toStringBinary(table.getTableName())+"  , the current regionInfo's regionLocation is :"+regionLocation );
-                     
-					//LOG.info("Table Name  " + table.getTableName());
-					LOG.info("Split server =>" + "  " + split);
+					//LOG.info("Split server =>" + "  " + split);
 					splits.add(split);
 				}
 			}
@@ -178,36 +150,27 @@ public class RHScanTable  extends org.apache.hadoop.mapreduce.InputFormat<RHRaw,
 		} catch (Exception e) {
 		LOG.error(StringUtils.stringifyException(e));
 		}
-
-
-		   Scan[] scans = null;		
-			//Scan[] scans = null;
-			scans = new Scan[] { new Scan() };
-		    LOG.info("Start Row Key" + Bytes.toStringBinary(org.apache.commons.codec.binary.Base64.decodeBase64(conf.get("rhipe.hbase.rowlim.start"))));	
-		    LOG.info("End Row Key" + Bytes.toStringBinary(org.apache.commons.codec.binary.Base64.decodeBase64(conf.get("rhipe.hbase.rowlim.end"))));
-		    LOG.info("Filter in  my " + Bytes.toStringBinary(org.apache.commons.codec.binary.Base64.decodeBase64(conf.get("rhipe.hbase.filter"))));
-		    //LOG.info("Filter out  " + conf.get("rhipe.hbase.filter"));
-			String[] x = conf.get("rhipe.hbase.mozilla.cacheblocks").split(":");
-			LOG.info("cache " +  Integer.parseInt(x[0]) + " block " + Integer.parseInt(x[1]));
-	    	scans = Fun.generateScansTbl(  Integer.parseInt(x[0]),
-				       Integer.parseInt(x[1]) == 1? true: false, 
-				       Integer.parseInt(conf.get("rhipe.hbase.set.batch")));
-	    	
-	    	
-	    	
+		Scan[] scans = null;		
+		scans = new Scan[] { new Scan() };
+		LOG.info("Start Row Key" + Bytes.toStringBinary(org.apache.commons.codec.binary.Base64.decodeBase64(conf.get("rhipe.hbase.rowlim.start"))));	
+		LOG.info("End Row Key" + Bytes.toStringBinary(org.apache.commons.codec.binary.Base64.decodeBase64(conf.get("rhipe.hbase.rowlim.end"))));
+		LOG.info("Filter in  my " + Bytes.toStringBinary(org.apache.commons.codec.binary.Base64.decodeBase64(conf.get("rhipe.hbase.filter"))));
+		String[] x = conf.get("rhipe.hbase.mozilla.cacheblocks").split(":");
+		LOG.info("cache " +  Integer.parseInt(x[0]) + " block " + Integer.parseInt(x[1]));
+	    scans = Fun.generateScansTbl(  Integer.parseInt(x[0]),
+	    Integer.parseInt(x[1]) == 1? true: false, 
+		Integer.parseInt(conf.get("rhipe.hbase.set.batch"))); 	
 		setScans(scans);
 	}
 	
 	
+	// get size of table. Not an efficient way of calculating. Calculation is done in client side.
 	public static int getSizeofFile (int caching, boolean cacheBlocks, int batch) throws IOException   {
-
-    	//ArrayList<Scan> scans = new ArrayList<Scan>();
     	Scan s = new Scan();
     	s.setBatch(batch);
     	s.setCaching(caching); // 1 is the default in Scan, which will be bad for
         s.setCacheBlocks(false); // don't set to true for MR jobs
-    	
-    	//scans.add(s);
+
 		@SuppressWarnings({ "deprecation", "static-access" })
 		Configuration config = new HBaseConfiguration().create();
     	HTable tt = new HTable(config, "tsdb");
@@ -230,14 +193,17 @@ public class RHScanTable  extends org.apache.hadoop.mapreduce.InputFormat<RHRaw,
 		
 	}
 	
-
+	/**
+	 * get column qualifier for whole table associate with row keys.
+	 * 
+	 * @param table
+	 *            The table to get the data from.
+	 */
 	 public static Scan[] getAllColumnQualifier (HTable table) {
 		 ArrayList<Scan> scans = new ArrayList<Scan>();
 		 Scan scans2 = new Scan();
 		 try{	          
-	        	int count =0;
-	             
-	             ResultScanner ss = table.getScanner(scans2);
+	        	ResultScanner ss = table.getScanner(scans2);
 	             for(Result r:ss){	            	
 	                 for(KeyValue kv : r.raw()){ 
 	                    scans2.addColumn(kv.getFamily(),kv.getQualifier());

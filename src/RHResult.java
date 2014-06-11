@@ -20,67 +20,51 @@ import org.godhuli.rhipe.RObjects;
 import org.hbase.async.Bytes;
 
 public class RHResult extends RHBytesWritable {
-
     private Result _result;
     private static REXP template;
     private static String[] _type = new String[]{};
     private final Log LOG = LogFactory.getLog(RHResult.class);
 
-
-
-  
     REXP.Builder template(){
     	return( REXP.newBuilder(template));
     }
 
-
     {
-	REXP.Builder templatebuild  = REXP.newBuilder();
-	templatebuild.setRclass(REXP.RClass.LIST);
-	template = templatebuild.build();
+    	REXP.Builder templatebuild  = REXP.newBuilder();
+    	templatebuild.setRclass(REXP.RClass.LIST);
+    	template = templatebuild.build();
     } 
-
     public RHResult(){
-	super();
+    	super();
     }
-
     public void set(Result r){
-	makeRObject(r);
+    	makeRObject(r);
     }
     public void makeRObject(Result r){
-	if(r == null) {
-	    super.set(RHNull.getRawBytes());
-	    return;
-	}
-	NavigableMap<byte[],NavigableMap<byte[],byte[]>> map = r.getNoVersionMap();
-	ArrayList<String> names = new ArrayList<String>();
-	REXP.Builder b = REXP.newBuilder(template);
-
-	for(Map.Entry<byte[] , NavigableMap<byte[],byte[]> > entry: map.entrySet()){
-	    //String family = new String(entry.getKey());
-	    for(Map.Entry<byte[], byte[]> columns : entry.getValue().entrySet()){
-	    byte[] qual = columns.getKey();
-	    short delta = 0;
-	    delta = (short) (( org.apache.hadoop.hbase.util.Bytes.toShort(qual) & 0xFFFF) >>> 4);
-	    names.add(""+delta);
-		REXP.Builder thevals   = REXP.newBuilder();
-		thevals.setRclass(REXP.RClass.RAW);
-		thevals.setRawValue(com.google.protobuf.ByteString.copyFrom( columns.getValue() ));
-		b.addRexpValue( thevals.build() );
-		//RHNumeric.set(setAndFinis(Bytes.toLong(columns.getValue())));
-	    }
-	}
-	
-	b.addAttrName("names");
-	b.addAttrValue(RObjects.makeStringVector(names.toArray(_type)));
-	super.set(b.build().toByteArray());
-	//super.set(RObjects.makeStringVector(names.toArray(_type)).toByteArray());
-	/*RHResult r1 = new RHResult();
-	REXP.Builder b1 = r1.template();
-	b1.addRexpValue(b.build());
-	super.set(b1.build().toByteArray());*/
- }
-
-
-
+		if(r == null) {
+		    super.set(RHNull.getRawBytes());
+		    return;
+		}
+		NavigableMap<byte[],NavigableMap<byte[],byte[]>> map = r.getNoVersionMap();
+		ArrayList<String> names = new ArrayList<String>();
+		REXP.Builder b = REXP.newBuilder(template);
+		for(Map.Entry<byte[] , NavigableMap<byte[],byte[]> > entry: map.entrySet()){
+			String family = new String(entry.getKey());
+		    for(Map.Entry<byte[], byte[]> columns : entry.getValue().entrySet()){
+			    byte[] qual = columns.getKey();
+			    //String column = new String(columns.getKey());
+			    short delta = 0;
+			    delta = (short) (( org.apache.hadoop.hbase.util.Bytes.toShort(qual) & 0xFFFF) >>> 4); // calculate delta in column qualifier
+			    names.add(family + ":" +delta);
+			    //names.add( family +":"+column);
+				REXP.Builder thevals   = REXP.newBuilder();
+				thevals.setRclass(REXP.RClass.RAW);
+				thevals.setRawValue(com.google.protobuf.ByteString.copyFrom( columns.getValue() ));
+				b.addRexpValue( thevals.build() );
+		    }
+		}
+		b.addAttrName("names");
+		b.addAttrValue(RObjects.makeStringVector(names.toArray(_type)));
+		super.set(b.build().toByteArray()); //return bytes array for column qualifier and value
+    }
 }

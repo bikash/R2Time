@@ -217,12 +217,6 @@ public class Fun {
          // MapReduce jobs
         s.setCacheBlocks(false); // don't set to true for MR jobs    	
         
-    	/*try {
-			getSize(s);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
     	
     	scans.add(s);
     	return scans.toArray(new Scan[scans.size()]);

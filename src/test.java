@@ -59,11 +59,11 @@ public static void getSize(Scan s1,String st, String en) throws IOException
 public static void main(String[] args)  throws Exception {
 	
 	DataType dt = new DataType();
-	dt.setHbaseClient("localhost");
+	dt.setHbaseClient("haisen24.ux.uis.no");
 	String[] tagk = {"1","host"};
     String[] tagv = {"1","*"};
     
-	String[] val =  dt.getRowkeyFilter("2014/02/15-00:00:00","2014/02/19-10:00:00", "r2time.load.test",  tagk, tagv);
+	String[] val =  dt.getRowkeyFilter("1980/01/16-00:00:00","2014/02/22-10:00:00", "r2time.stress.test",  tagk, tagv);
 	System.out.println("\n Filter  ======" + org.apache.hadoop.hbase.util.Bytes.toStringBinary(org.apache.commons.codec.binary.Base64.decodeBase64(val[2])));
 	//System.out.println("\n================ " +org.apache.hadoop.hbase.util.Bytes.toStringBinary(org.apache.commons.codec.binary.Base64.decodeBase64("AAABUYoUEg==")));
 	//System.out.println("\n================ " +org.apache.hadoop.hbase.util.Bytes.toStringBinary(org.apache.commons.codec.binary.Base64.decodeBase64(val[1])));
@@ -83,7 +83,7 @@ public static void main(String[] args)  throws Exception {
    scans.setFilter(rowFilterRegex); 
 
    Configuration conf = HBaseConfiguration.create();
-   conf.set("hbase.zookeeper.quorum", "localhost");
+   conf.set("hbase.zookeeper.quorum", "haisen24.ux.uis.no");
    HTable table1 = new HTable(conf, "tsdb");
    ResultScanner ss = table1.getScanner(scans);
   // Result result = null;   
