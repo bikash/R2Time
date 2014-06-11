@@ -6,10 +6,10 @@
 #########################################################################################
 
 ## Load all the necessary libraries
-library(r2time) 
+library(r2time)
 library(Rhipe)
 rhinit()	## Initialize rhipe framework.
-library(rJava) 
+library(rJava)
 .jinit()    ## Initialize rJava
 r2t.init()  ## Initialize R2Time  framework.
 library(bitops) ## Load library for bits operation, It is used for conversion between float and integer numbers.
@@ -17,8 +17,8 @@ library(bitops) ## Load library for bits operation, It is used for conversion be
 tagk = c("host") ## Tag keys. It could be list
 tagv = c("*")	## Tag values. It could be list or can be separate multiple by pipe
 metric = 'r2time.load.test' ## Assign multiple metrics
-startdate ='2012/01/19-00:00:00' ## Start date and time of timeseries
-enddate ='2014/01/19-04:00:00' ## End date and time of timeseries
+startdate ='2011/01/16-00:00:00' ## Start date and time of timeseries
+enddate ='2014/09/21-04:00:00' ## End date and time of timeseries
 output = "/home/bikash/tmp/ex1.1" ## Output file, should be in HDFS file system.
 jobname= "MapReduce job example 1.1" ## Assign relevant job description name.
 mapred <- list(mapred.reduce.tasks=0) ## Mapreduce configuration, you can assign number of mapper and reducer for a task. For this case is 0, no reducer is required.
@@ -39,20 +39,24 @@ zooinfo=list(zookeeper.znode.parent='/hbase',hbase.zookeeper.quorum='localhost')
 map <- expression({
     library(bitops)
     library(r2time)
-    lapply(seq_along(map.values), function(r) {
+    library(gtools)
+    x <-lapply(seq_along(map.values), function(r) {
         v <- r2t.toFloat(map.values[[r]][[1]])
-        k<-r2t.getRowBaseTimestamp(map.keys[[r]])
-        rhcollect(k,map.values[[r]])
-		#rhcollect(k,v)
+        k1<-r2t.getRowBaseTimestamp(map.keys[[r]])
+        k <-r2t.getRealTimestamp(k1,map.values[[r]])
+        a <- list(k,v)
+        #rhcollect(k,v)
+		#rhcollect(k1,map.values[[r]])
 	})
+    rhcollect(1,x)
 })
 
 ## Run job in R2Time.
-r2t.job(table='tsdb',sdate=startdate, edate=enddate, metrics=metric, tagk=tagk, tagv=tagv, jars=jars, zooinfo=zooinfo, 
+r2t.job(table='tsdb',sdate=startdate, edate=enddate, metrics=metric, tagk=tagk, tagv=tagv, jars=jars, zooinfo=zooinfo,
 	output=output, jobname=jobname, mapred=mapred, map=map, reduce=0)
 
-## Read Output file 
-out <- rhread(output)
-out
+## Read Output file
+out1 <- rhread(output)
+out1
 
 #########################################################################################
