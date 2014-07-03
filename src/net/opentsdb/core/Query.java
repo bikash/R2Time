@@ -32,7 +32,7 @@ public interface Query {
    * @throws IllegalArgumentException if
    * {@code timestamp >= }{@link #getEndTime getEndTime}.
    */
-  void setStartTime(long timestamp);
+	void setStartTime(long timestamp);
 
   /**
    * Returns the start time of the graph.
@@ -51,7 +51,7 @@ public interface Query {
    * @throws IllegalArgumentException if
    * {@code timestamp <= }{@link #getStartTime getStartTime}.
    */
-  void setEndTime(long timestamp);
+  public void setEndTime(long timestamp);
 
   /**
    * Returns the end time of the graph.

@@ -63,7 +63,7 @@ public static void main(String[] args)  throws Exception {
 	String[] tagk = {"1","host"};
     String[] tagv = {"1","*"};
     
-	String[] val =  dt.getRowkeyFilter("1980/01/16-00:00:00","2014/02/22-10:00:00", "r2time.stress.test",  tagk, tagv);
+	String[] val =  dt.getRowkeyFilter("2012/11/07-09:00:00","2012/11/08-10:00:00", "cipsi.haisen.proc.loadavg.1m",  tagk, tagv);
 	System.out.println("\n Filter  ======" + org.apache.hadoop.hbase.util.Bytes.toStringBinary(org.apache.commons.codec.binary.Base64.decodeBase64(val[2])));
 	//System.out.println("\n================ " +org.apache.hadoop.hbase.util.Bytes.toStringBinary(org.apache.commons.codec.binary.Base64.decodeBase64("AAABUYoUEg==")));
 	//System.out.println("\n================ " +org.apache.hadoop.hbase.util.Bytes.toStringBinary(org.apache.commons.codec.binary.Base64.decodeBase64(val[1])));
@@ -103,8 +103,8 @@ public static void main(String[] args)  throws Exception {
     	   final int len = qual.length;
     	   //final short delta = (short) ((Bytes.getShort(qual) & 0xFFFF) >>> 4); // this is 12 bit delta qualifier.
     	   
-    	   final short delta = (short) ((Bytes.getShort(kv.getQualifier()) & 0xFFFF) >>> 4);
-    	   final short delta1 = (short) (( org.apache.hadoop.hbase.util.Bytes.toShort(kv.getQualifier()) & 0xFFFF) >>> 4);
+    	   //final short delta = (short) ((Bytes.getShort(kv.getQualifier()) & 0xFFFF) >>> 4);
+    	   final short delta = (short) (( org.apache.hadoop.hbase.util.Bytes.toShort(kv.getQualifier()) & 0xFFFF) >>> 4);
     	   //byte[] b = Bytes.fromShort(delta1);
     	   //get.qualifier(kv.getQualifier());
     	   int val_len = 1;
@@ -114,7 +114,7 @@ public static void main(String[] args)  throws Exception {
     	   //System.out.print("\n Delta index 1 " + delta + " index 0 -> " + qual[0] +  "\n");  
     	   //System.out.print("\n Delta bytes " + qual + "\n");  
     	   //System.out.print("\n Delta qualifier " + delta + "\n");   
-    	   //System.out.print("\n Delta qualifier 1=> " + new String(delta1 + "\n"); 
+    	   //System.out.print("\n Delta qualifier 1=> " + delta + "\n"); 
     	   System.out.print("\n Value " + org.apache.hadoop.hbase.util.Bytes.toFloat(kv.getValue() )+ "\n");   
     	   rowcount1++;
        }	

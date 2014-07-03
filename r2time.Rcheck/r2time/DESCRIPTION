@@ -1,0 +1,11 @@
+Package: r2time
+Type: Package
+Title: Analysis of Large opentsdb time-series datasets in HBase
+Version: 1.0
+Date: 2013-07-16
+Author: Bikash Agrawal
+Maintainer: Bikash Agrawal <er.bikash21@gmail.com>
+Description: Analysis of Large opentsdb time-series datasets in HBase
+License: GNU
+Packaged: 2013-10-09 13:23:36 UTC; bikash
+Built: R 3.0.1; ; 2014-07-03 10:25:10 UTC; unix

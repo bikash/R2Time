@@ -1,7 +1,7 @@
 #########################################################################################
 # Author: Bikash Agrawal
 # Date: 06-07-2013
-# Description: This is a core library file of r2time. 
+# Description: This is a core library file of r2time.
 #########################################################################################
 
 
@@ -14,7 +14,7 @@ pushdata <- function(l, x) {
 pushList <- function(l) {
    lst <- get(l, parent.frame())
    a <-c("1")
-   y <-append(eval(as.name("a")),lst)	
+   y <-append(eval(as.name("a")),lst)
    assign(l, y, envir=parent.frame())
  }
 
@@ -24,13 +24,14 @@ r2t.todelta <- function(x){
 	del <- bitShiftR(man,4)
 	return (del)
 }
+
 ###Data conversion need bitops library for bit operation
 r2t.toInt <-function(x)
 {
-	n <- 0	
+	n <- 0
 	for(i in 1:length(x)){
 	   n <- bitShiftL(n,8)
-	   n <- bitXor(n,bitAnd(x[i],0xFF))		
+	   n <- bitXor(n,bitAnd(x[i],0xFF))
 	}
 	return(n)
 }
@@ -55,16 +56,33 @@ r2t.toFloat<- function(x){
 	  		f<-r2t.intBittoFloat(i)
 	    	return(f)
 	  }
-	  else{	
+	  else{
 	    i<-r2t.toInt(x)
 	    f<-r2t.intBittoFloat(i)
 	    return(f)
-        } 		
+        }
+}
+
+
+
+###########Conversion Bytes to int/Float######################################
+r2t.toValue<- function(x){
+
+	  if(length(x)>4)
+	  {
+	  		i<-r2t.toInt(x)
+	    	return(i)
+	  }
+	  else{
+	    i<-r2t.toInt(x)
+	    f<-r2t.intBittoFloat(i)
+	    return(f)
+      }
 }
 
 ##Get Start and end rowkey with filter for tags.
 r2t.getRowkeyFilter <- function(sdate,edate,metrics,tagk,tagv){
-	tagk = pushList("tagk")	
+	tagk = pushList("tagk")
 	if(!is.array(tagk))
 		tagkey = array(data = tagk, dim = length(tagk))
 	else
@@ -75,7 +93,7 @@ r2t.getRowkeyFilter <- function(sdate,edate,metrics,tagk,tagv){
 	else
 		tagvalue = tagv
 	obj<-.jnew("DataType") ;
-	
+
 
 	res<-.jcall(obj,"[S","getRowkeyFilter",sdate,edate,metrics,tagkey,tagvalue);
 }
@@ -95,10 +113,24 @@ r2t.getBaseTimestamp <- function(rowkey)
 	res<-.jcall(obj,"I","getBaseTimestamp",rowkey);
 }
 
+#Get actual timestamp by adding basetimestamp delta field.
+r2t.getRealTimestamp<- function(basetimestamp,delta)
+{
+	a <- names(delta);
+	if(!invalid(a)){
+		del <- gsub("t:","",a)
+		timestamp <- basetimestamp + strtoi(del)
+		return(timestamp)
+	}
+	else
+		return(0)
+}
+
+
 ##function to convert list of data into float
 r2t.convertByteArraytoFloat <- function(v)
 {
-	
+
      obj<-.jnew("DataType") ;
      res<-.jcall(obj,"[F","convertBytetoFloat",v);
 }
@@ -120,7 +152,7 @@ r2t.Bytes2Float <- function(data)
 ##Get rowkey span from tsdb table
 r2t.getRowKey <- function(sdate,edate,tagk,tagv,metrics){
 	obj<-.jnew("DataType") ;
-	res<-.jcall(obj,"[J","getRowKey",sdate,edate,tagk,tagv,metrics); 
+	res<-.jcall(obj,"[J","getRowKey",sdate,edate,tagk,tagv,metrics);
 }
 #a<-r2t.getRowKey('2013/03/12','2013/03/14','host','pc-0-227','proc.loadavg.1m');
 
@@ -169,7 +201,7 @@ makeRaw <- function(a){
         mapred$rhipe.hbase.rowlim.end   <- rows[[2]]
       }
 	  mapred$rhipe.hbase.filter   <- filter
-	  mapred$rhipe.hbase.set.batch   <- batch		
+	  mapred$rhipe.hbase.set.batch   <- batch
 	  mapred$parse.ifolder='';
       mapred$rhipe.hbase.mozilla.cacheblocks <- sprintf("%s:%s",as.integer(caching),as.integer(cacheBlocks))
   	  mapred$zookeeper.znode.parent <- zooinfo$"zookeeper.znode.parent"
@@ -178,9 +210,9 @@ makeRaw <- function(a){
 
       message(sprintf("Using %s as HBase Client", mapred$rhipe.hbase.client))
       message(sprintf("Using %s table", table))
-    
+
       mapred$rhipe.hbase.dateformat <- "yyyyMMdd"
-      mapred$rhipe.hbase.mozilla.prefix <-  "byteprefix" 
+      mapred$rhipe.hbase.mozilla.prefix <-  "byteprefix"
       mapred$rhipe_inputformat_class <- 'RHHBaseRecorder'
       if(fulltable == 1){
      	 mapred$rhipe_inputformat_class <- 'RHScanTable'
@@ -188,7 +220,7 @@ makeRaw <- function(a){
       mapred$rhipe_inputformat_keyclass <- 'org.godhuli.rhipe.RHBytesWritable'
       mapred$rhipe_inputformat_valueclass <- 'RHResult'
       mapred$jarfiles <- jars
-      mapred   
+      mapred
     }
 }
 
@@ -202,10 +234,10 @@ r2t.setHbaseClient <- function(host='localhost')
 
 
 ###Submitting to Rhipe map reduce job
-r2t.job <- function(table='tsdb',sdate,edate,metrics,tagk,tagv, caching=1400L, cacheBlocks=FALSE,autoReduceDetect=FALSE , batch=100,  jars="" ,zooinfo,  fulltable=0, output="", jobname="MapReduce job", mapred="",map=map,reduce=reduce){
+r2t.job <- function(table='tsdb',sdate,edate,metrics,tagk,tagv, caching=1400L, cacheBlocks=FALSE, autoReduceDetect=FALSE , batch=100,  jars="" ,zooinfo,  fulltable=0, output="", jobname="MapReduce job", mapred="", map=map, reduce=reduce, setup = NULL){
 r2t.setHbaseClient(zooinfo$"hbase.zookeeper.quorum") ##setting hbase client
 r <-r2t.getRowkeyFilter(sdate,edate,metrics,tagk,tagv)  ## row start and end row and filters
-rows <- c(r[1],r[2]) 
+rows <- c(r[1],r[2])
 filter <- r[3]
 ##send jobs to RHIPE
 z <- rhwatch(map=map,  reduce=reduce,
@@ -214,6 +246,7 @@ r2t.hbaseinput(table=table,rows=rows, caching=1400L, cacheBlocks=FALSE, jars=jar
 ,output = output
 ,jobname = jobname
 ,mapred = mapred
+,setup = setup
 ,param = list(beginningOflastMonth = Sys.Date()-45)
 )
 }
@@ -227,10 +260,10 @@ r2t.init <- function(requestAdmin=TRUE,otherConfigs=NULL,HBASE.HOME="/usr/lib/hb
                     ,r2timeJar = list.files(paste(system.file(package="r2time"),"java",sep=.Platform$file.sep),pattern="jar$",full=T)){
   hadoopJars <- list.files(HADOOP.HOME,pattern="jar$",full.names=TRUE,rec=TRUE)
   hbaseJars <- list.files(HBASE.HOME,pattern="jar$",full.names=TRUE,rec=TRUE)
-  hbaseLibJars <- list.files(HBASE.LIB,pattern="jar$",full.names=TRUE,rec=TRUE)	
+  hbaseLibJars <- list.files(HBASE.LIB,pattern="jar$",full.names=TRUE,rec=TRUE)
   hadoopConf <- list.files(HADOOP.CONF,pattern="-site.xml$",full.names=TRUE,rec=TRUE)
   hbaseConf <- list.files(HBASE.CONF,pattern="-site.xml$",full.names=TRUE,rec=TRUE)
- 
+
   #.jinit(c(HADOOP.CONF, HBASE.CONF,rhipeJar,r2timeJar,hadoopJars,hbaseJars,hbaseLibJars))
   .jinit()
   jars <- c(HADOOP.CONF, HBASE.CONF,rhipeJar,r2timeJar,hadoopJars,hbaseJars,hbaseLibJars)

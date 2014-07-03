@@ -1,0 +1,30 @@
+<html>
+<head>
+<script>
+var start = new Date().getTime();
+ var nodetsdb = new Nodetsdb({host:'haisen23.ux.uis.no', port:4242});
+
+ var queryconf = {start:'2000/01/01-00:00:00',end:'2000/11/18-10:00:00'
+                , metric:'r2time.load.test1', aggregator:'avg'
+                , tags:{host:*}};
+
+ nodetsdb.getDataPoints(queryconf, function(data){
+             if(datapoints){
+                //console.log(datapoints);
+             }else{
+                console.log('No datapoints');
+             }
+        });
+var end = new Date().getTime();
+var time = end - start;
+alert('Execution time: ' + time);
+
+</script>
+</head>
+
+
+<body>
+
+
+</body>
+</html>

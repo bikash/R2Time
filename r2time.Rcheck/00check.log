@@ -1,0 +1,334 @@
+* using log directory ‘/home/bikash/repos/r2time/r2time.Rcheck’
+* using R version 3.0.1 (2013-05-16)
+* using platform: x86_64-unknown-linux-gnu (64-bit)
+* using session charset: UTF-8
+* checking for file ‘r2time/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘r2time’ version ‘1.0’
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘r2time’ can be installed ... WARNING
+Found the following significant warnings:
+  Warning: /home/bikash/repos/r2time/r2time/man/r2time-package.Rd:29: All text must be in a section
+  Warning: /home/bikash/repos/r2time/r2time/man/r2time-package.Rd:30: All text must be in a section
+See ‘/home/bikash/repos/r2time/r2time.Rcheck/00install.out’ for details.
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... WARNING
+Non-standard license specification:
+  GNU
+Standardizable: FALSE
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking for unstated dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+r2t.init: warning in list.files(paste(system.file(package = "Rhipe"),
+  "java", sep = .Platform$file.sep), pattern = "jar$", full = T):
+  partial argument match of 'full' to 'full.names'
+r2t.init: warning in list.files(paste(system.file(package = "r2time"),
+  "java", sep = .Platform$file.sep), pattern = "jar$", full = T):
+  partial argument match of 'full' to 'full.names'
+r2t.init: warning in list.files(HADOOP.HOME, pattern = "jar$",
+  full.names = TRUE, rec = TRUE): partial argument match of 'rec' to
+  'recursive'
+r2t.init: warning in list.files(HBASE.HOME, pattern = "jar$",
+  full.names = TRUE, rec = TRUE): partial argument match of 'rec' to
+  'recursive'
+r2t.init: warning in list.files(HBASE.LIB, pattern = "jar$", full.names
+  = TRUE, rec = TRUE): partial argument match of 'rec' to 'recursive'
+r2t.init: warning in list.files(HADOOP.CONF, pattern = "-site.xml$",
+  full.names = TRUE, rec = TRUE): partial argument match of 'rec' to
+  'recursive'
+r2t.init: warning in list.files(HBASE.CONF, pattern = "-site.xml$",
+  full.names = TRUE, rec = TRUE): partial argument match of 'rec' to
+  'recursive'
+r2t.Bytes2Float: no visible global function definition for ‘.jnew’
+r2t.Bytes2Float: no visible global function definition for ‘.jcall’
+r2t.String2Bytes: no visible global function definition for ‘.jnew’
+r2t.String2Bytes: no visible global function definition for ‘.jcall’
+r2t.byte2long: no visible global function definition for ‘.jcall’
+r2t.bytes2float: no visible global function definition for ‘.jnew’
+r2t.bytes2float: no visible global function definition for ‘.jcall’
+r2t.connect: no visible global function definition for ‘.jnew’
+r2t.connect : j : <anonymous>: no visible global function definition
+  for ‘getTagK’
+r2t.connect : j : <anonymous>: no visible global function definition
+  for ‘getTagV’
+r2t.convertByteArraytoFloat: no visible global function definition for
+  ‘.jnew’
+r2t.convertByteArraytoFloat: no visible global function definition for
+  ‘.jcall’
+r2t.getBaseTimestamp: no visible global function definition for ‘.jnew’
+r2t.getBaseTimestamp: no visible global function definition for
+  ‘.jcall’
+r2t.getLong: no visible global function definition for ‘.jcall’
+r2t.getMetrics: no visible global function definition for ‘.jcall’
+r2t.getRealTimestamp: no visible global function definition for
+  ‘invalid’
+r2t.getRowKey: no visible global function definition for ‘.jnew’
+r2t.getRowKey: no visible global function definition for ‘.jcall’
+r2t.getRowkeyFilter: no visible global function definition for ‘.jnew’
+r2t.getRowkeyFilter: no visible global function definition for ‘.jcall’
+r2t.getTagKeys: no visible global function definition for ‘.jcall’
+r2t.getTagValue: no visible global function definition for ‘.jcall’
+r2t.getTimeSereiesData: no visible global function definition for
+  ‘.jnew’
+r2t.getTimeSereiesData: no visible global function definition for
+  ‘.jcall’
+r2t.hbaseinput : makeRaw: no visible global function definition for ‘J’
+r2t.hbaseinput : makeRaw: no visible global function definition for
+  ‘.jbyte’
+r2t.init: no visible global function definition for ‘.jinit’
+r2t.init: no visible global function definition for ‘.jaddClassPath’
+r2t.init: no visible global function definition for ‘.jnew’
+r2t.init: no visible global function definition for ‘.jcheck’
+r2t.intBittoFloat: no visible global function definition for ‘bitAnd’
+r2t.intBittoFloat: no visible global function definition for
+  ‘bitShiftR’
+r2t.intBittoFloat: no visible global function definition for ‘bitOr’
+r2t.job: no visible global function definition for ‘rhwatch’
+r2t.long2byte: no visible global function definition for ‘.jcall’
+r2t.setHbaseClient: no visible global function definition for ‘.jnew’
+r2t.setHbaseClient: no visible global function definition for ‘.jcall’
+r2t.setInt: no visible global function definition for ‘.jcall’
+r2t.toInt: no visible global function definition for ‘bitShiftL’
+r2t.toInt: no visible global function definition for ‘bitXor’
+r2t.toInt: no visible global function definition for ‘bitAnd’
+r2t.todelta: no visible global function definition for ‘bitAnd’
+r2t.todelta: no visible global function definition for ‘bitShiftR’
+* checking Rd files ... WARNING
+prepare_Rd: pushList.Rd:19-21: Dropping empty section \details
+prepare_Rd: pushList.Rd:22-28: Dropping empty section \value
+prepare_Rd: pushList.Rd:35-37: Dropping empty section \note
+prepare_Rd: pushList.Rd:32-34: Dropping empty section \author
+prepare_Rd: pushList.Rd:29-31: Dropping empty section \references
+prepare_Rd: pushList.Rd:41-43: Dropping empty section \seealso
+prepare_Rd: pushdata.Rd:22-24: Dropping empty section \details
+prepare_Rd: pushdata.Rd:25-31: Dropping empty section \value
+prepare_Rd: pushdata.Rd:38-40: Dropping empty section \note
+prepare_Rd: pushdata.Rd:35-37: Dropping empty section \author
+prepare_Rd: pushdata.Rd:32-34: Dropping empty section \references
+prepare_Rd: pushdata.Rd:44-46: Dropping empty section \seealso
+prepare_Rd: r2t.String2Bytes.Rd:19-21: Dropping empty section \details
+prepare_Rd: r2t.String2Bytes.Rd:22-28: Dropping empty section \value
+prepare_Rd: r2t.String2Bytes.Rd:35-37: Dropping empty section \note
+prepare_Rd: r2t.String2Bytes.Rd:32-34: Dropping empty section \author
+prepare_Rd: r2t.String2Bytes.Rd:29-31: Dropping empty section \references
+prepare_Rd: r2t.String2Bytes.Rd:41-43: Dropping empty section \seealso
+prepare_Rd: r2t.byte2long.Rd:22-24: Dropping empty section \details
+prepare_Rd: r2t.byte2long.Rd:25-31: Dropping empty section \value
+prepare_Rd: r2t.byte2long.Rd:38-40: Dropping empty section \note
+prepare_Rd: r2t.byte2long.Rd:35-37: Dropping empty section \author
+prepare_Rd: r2t.byte2long.Rd:32-34: Dropping empty section \references
+prepare_Rd: r2t.byte2long.Rd:44-46: Dropping empty section \seealso
+prepare_Rd: r2t.bytes2float.Rd:19-21: Dropping empty section \details
+prepare_Rd: r2t.bytes2float.Rd:22-28: Dropping empty section \value
+prepare_Rd: r2t.bytes2float.Rd:35-37: Dropping empty section \note
+prepare_Rd: r2t.bytes2float.Rd:32-34: Dropping empty section \author
+prepare_Rd: r2t.bytes2float.Rd:29-31: Dropping empty section \references
+prepare_Rd: r2t.bytes2float.Rd:41-43: Dropping empty section \seealso
+prepare_Rd: r2t.bytes2float_1.Rd:19-21: Dropping empty section \details
+prepare_Rd: r2t.bytes2float_1.Rd:22-28: Dropping empty section \value
+prepare_Rd: r2t.bytes2float_1.Rd:35-37: Dropping empty section \note
+prepare_Rd: r2t.bytes2float_1.Rd:32-34: Dropping empty section \author
+prepare_Rd: r2t.bytes2float_1.Rd:29-31: Dropping empty section \references
+prepare_Rd: r2t.bytes2float_1.Rd:41-43: Dropping empty section \seealso
+prepare_Rd: r2t.connect.Rd:22-24: Dropping empty section \details
+prepare_Rd: r2t.connect.Rd:25-31: Dropping empty section \value
+prepare_Rd: r2t.connect.Rd:38-40: Dropping empty section \note
+prepare_Rd: r2t.connect.Rd:35-37: Dropping empty section \author
+prepare_Rd: r2t.connect.Rd:32-34: Dropping empty section \references
+prepare_Rd: r2t.connect.Rd:44-46: Dropping empty section \seealso
+prepare_Rd: r2t.convertByteArraytoFloat.Rd:19-21: Dropping empty section \details
+prepare_Rd: r2t.convertByteArraytoFloat.Rd:22-28: Dropping empty section \value
+prepare_Rd: r2t.convertByteArraytoFloat.Rd:35-37: Dropping empty section \note
+prepare_Rd: r2t.convertByteArraytoFloat.Rd:32-34: Dropping empty section \author
+prepare_Rd: r2t.convertByteArraytoFloat.Rd:29-31: Dropping empty section \references
+prepare_Rd: r2t.convertByteArraytoFloat.Rd:41-43: Dropping empty section \seealso
+prepare_Rd: r2t.getBaseTimestamp.Rd:19-21: Dropping empty section \details
+prepare_Rd: r2t.getBaseTimestamp.Rd:22-28: Dropping empty section \value
+prepare_Rd: r2t.getBaseTimestamp.Rd:35-37: Dropping empty section \note
+prepare_Rd: r2t.getBaseTimestamp.Rd:32-34: Dropping empty section \author
+prepare_Rd: r2t.getBaseTimestamp.Rd:29-31: Dropping empty section \references
+prepare_Rd: r2t.getBaseTimestamp.Rd:41-43: Dropping empty section \seealso
+prepare_Rd: r2t.getLong.Rd:25-27: Dropping empty section \details
+prepare_Rd: r2t.getLong.Rd:28-34: Dropping empty section \value
+prepare_Rd: r2t.getLong.Rd:41-43: Dropping empty section \note
+prepare_Rd: r2t.getLong.Rd:38-40: Dropping empty section \author
+prepare_Rd: r2t.getLong.Rd:35-37: Dropping empty section \references
+prepare_Rd: r2t.getLong.Rd:47-49: Dropping empty section \seealso
+prepare_Rd: r2t.getMetrics.Rd:22-24: Dropping empty section \details
+prepare_Rd: r2t.getMetrics.Rd:25-31: Dropping empty section \value
+prepare_Rd: r2t.getMetrics.Rd:38-40: Dropping empty section \note
+prepare_Rd: r2t.getMetrics.Rd:35-37: Dropping empty section \author
+prepare_Rd: r2t.getMetrics.Rd:32-34: Dropping empty section \references
+prepare_Rd: r2t.getMetrics.Rd:44-46: Dropping empty section \seealso
+prepare_Rd: r2t.getRealTimestamp.Rd:22-24: Dropping empty section \details
+prepare_Rd: r2t.getRealTimestamp.Rd:25-31: Dropping empty section \value
+prepare_Rd: r2t.getRealTimestamp.Rd:38-40: Dropping empty section \note
+prepare_Rd: r2t.getRealTimestamp.Rd:35-37: Dropping empty section \author
+prepare_Rd: r2t.getRealTimestamp.Rd:32-34: Dropping empty section \references
+prepare_Rd: r2t.getRealTimestamp.Rd:44-46: Dropping empty section \seealso
+prepare_Rd: r2t.getRowBaseTimestamp.Rd:31-33: Dropping empty section \details
+prepare_Rd: r2t.getRowBaseTimestamp.Rd:34-40: Dropping empty section \value
+prepare_Rd: r2t.getRowBaseTimestamp.Rd:47-49: Dropping empty section \note
+prepare_Rd: r2t.getRowBaseTimestamp.Rd:44-46: Dropping empty section \author
+prepare_Rd: r2t.getRowBaseTimestamp.Rd:41-43: Dropping empty section \references
+prepare_Rd: r2t.getRowBaseTimestamp.Rd:53-55: Dropping empty section \seealso
+prepare_Rd: r2t.getRowKey.Rd:31-33: Dropping empty section \details
+prepare_Rd: r2t.getRowKey.Rd:34-40: Dropping empty section \value
+prepare_Rd: r2t.getRowKey.Rd:47-49: Dropping empty section \note
+prepare_Rd: r2t.getRowKey.Rd:44-46: Dropping empty section \author
+prepare_Rd: r2t.getRowKey.Rd:41-43: Dropping empty section \references
+prepare_Rd: r2t.getRowKey.Rd:53-55: Dropping empty section \seealso
+prepare_Rd: r2t.getRowkeyFilter.Rd:31-33: Dropping empty section \details
+prepare_Rd: r2t.getRowkeyFilter.Rd:34-40: Dropping empty section \value
+prepare_Rd: r2t.getRowkeyFilter.Rd:47-49: Dropping empty section \note
+prepare_Rd: r2t.getRowkeyFilter.Rd:44-46: Dropping empty section \author
+prepare_Rd: r2t.getRowkeyFilter.Rd:41-43: Dropping empty section \references
+prepare_Rd: r2t.getRowkeyFilter.Rd:53-55: Dropping empty section \seealso
+prepare_Rd: r2t.getTagKeys.Rd:22-24: Dropping empty section \details
+prepare_Rd: r2t.getTagKeys.Rd:25-31: Dropping empty section \value
+prepare_Rd: r2t.getTagKeys.Rd:38-40: Dropping empty section \note
+prepare_Rd: r2t.getTagKeys.Rd:35-37: Dropping empty section \author
+prepare_Rd: r2t.getTagKeys.Rd:32-34: Dropping empty section \references
+prepare_Rd: r2t.getTagKeys.Rd:44-46: Dropping empty section \seealso
+prepare_Rd: r2t.getTagValue.Rd:25-27: Dropping empty section \details
+prepare_Rd: r2t.getTagValue.Rd:28-34: Dropping empty section \value
+prepare_Rd: r2t.getTagValue.Rd:41-43: Dropping empty section \note
+prepare_Rd: r2t.getTagValue.Rd:38-40: Dropping empty section \author
+prepare_Rd: r2t.getTagValue.Rd:35-37: Dropping empty section \references
+prepare_Rd: r2t.getTagValue.Rd:47-49: Dropping empty section \seealso
+prepare_Rd: r2t.getTimeSereiesData.Rd:31-33: Dropping empty section \details
+prepare_Rd: r2t.getTimeSereiesData.Rd:34-40: Dropping empty section \value
+prepare_Rd: r2t.getTimeSereiesData.Rd:47-49: Dropping empty section \note
+prepare_Rd: r2t.getTimeSereiesData.Rd:44-46: Dropping empty section \author
+prepare_Rd: r2t.getTimeSereiesData.Rd:41-43: Dropping empty section \references
+prepare_Rd: r2t.getTimeSereiesData.Rd:53-55: Dropping empty section \seealso
+prepare_Rd: r2t.hbaseinput.Rd:49-51: Dropping empty section \details
+prepare_Rd: r2t.hbaseinput.Rd:52-58: Dropping empty section \value
+prepare_Rd: r2t.hbaseinput.Rd:65-67: Dropping empty section \note
+prepare_Rd: r2t.hbaseinput.Rd:62-64: Dropping empty section \author
+prepare_Rd: r2t.hbaseinput.Rd:59-61: Dropping empty section \references
+prepare_Rd: r2t.hbaseinput.Rd:71-73: Dropping empty section \seealso
+prepare_Rd: r2t.init.Rd:42-44: Dropping empty section \details
+prepare_Rd: r2t.init.Rd:46-48: Dropping empty section \references
+prepare_Rd: r2t.intBittoFloat.Rd:19-21: Dropping empty section \details
+prepare_Rd: r2t.intBittoFloat.Rd:22-28: Dropping empty section \value
+prepare_Rd: r2t.intBittoFloat.Rd:35-37: Dropping empty section \note
+prepare_Rd: r2t.intBittoFloat.Rd:32-34: Dropping empty section \author
+prepare_Rd: r2t.intBittoFloat.Rd:29-31: Dropping empty section \references
+prepare_Rd: r2t.intBittoFloat.Rd:41-43: Dropping empty section \seealso
+prepare_Rd: r2t.long2byte.Rd:22-24: Dropping empty section \details
+prepare_Rd: r2t.long2byte.Rd:25-31: Dropping empty section \value
+prepare_Rd: r2t.long2byte.Rd:38-40: Dropping empty section \note
+prepare_Rd: r2t.long2byte.Rd:35-37: Dropping empty section \author
+prepare_Rd: r2t.long2byte.Rd:32-34: Dropping empty section \references
+prepare_Rd: r2t.long2byte.Rd:44-46: Dropping empty section \seealso
+prepare_Rd: r2t.rhwatch.Rd:64-66: Dropping empty section \details
+prepare_Rd: r2t.rhwatch.Rd:67-73: Dropping empty section \value
+prepare_Rd: r2t.rhwatch.Rd:80-82: Dropping empty section \note
+prepare_Rd: r2t.rhwatch.Rd:77-79: Dropping empty section \author
+prepare_Rd: r2t.rhwatch.Rd:74-76: Dropping empty section \references
+prepare_Rd: r2t.rhwatch.Rd:86-88: Dropping empty section \seealso
+prepare_Rd: r2t.setInt.Rd:28-30: Dropping empty section \details
+prepare_Rd: r2t.setInt.Rd:31-37: Dropping empty section \value
+prepare_Rd: r2t.setInt.Rd:44-46: Dropping empty section \note
+prepare_Rd: r2t.setInt.Rd:41-43: Dropping empty section \author
+prepare_Rd: r2t.setInt.Rd:38-40: Dropping empty section \references
+prepare_Rd: r2t.setInt.Rd:50-52: Dropping empty section \seealso
+prepare_Rd: r2t.toFloat.Rd:19-21: Dropping empty section \details
+prepare_Rd: r2t.toFloat.Rd:22-28: Dropping empty section \value
+prepare_Rd: r2t.toFloat.Rd:35-37: Dropping empty section \note
+prepare_Rd: r2t.toFloat.Rd:32-34: Dropping empty section \author
+prepare_Rd: r2t.toFloat.Rd:29-31: Dropping empty section \references
+prepare_Rd: r2t.toFloat.Rd:41-43: Dropping empty section \seealso
+prepare_Rd: r2t.toInt.Rd:19-21: Dropping empty section \details
+prepare_Rd: r2t.toInt.Rd:22-28: Dropping empty section \value
+prepare_Rd: r2t.toInt.Rd:35-37: Dropping empty section \note
+prepare_Rd: r2t.toInt.Rd:32-34: Dropping empty section \author
+prepare_Rd: r2t.toInt.Rd:29-31: Dropping empty section \references
+prepare_Rd: r2t.toInt.Rd:41-43: Dropping empty section \seealso
+prepare_Rd: r2time-package.Rd:29: All text must be in a section
+prepare_Rd: r2time-package.Rd:30: All text must be in a section
+* checking Rd metadata ... WARNING
+Rd files with duplicated name 'r2t.connect':
+  ‘r2t.connect.Rd’ ‘r2t.getRealTimestamp.Rd’
+Rd files with duplicated name 'r2t.getRowKey':
+  ‘r2t.getRowBaseTimestamp.Rd’ ‘r2t.getRowKey.Rd’
+Rd files with duplicated alias 'r2t.connect':
+  ‘r2t.connect.Rd’ ‘r2t.getRealTimestamp.Rd’
+Rd files with duplicated alias 'r2t.getRowKey':
+  ‘r2t.getRowBaseTimestamp.Rd’ ‘r2t.getRowKey.Rd’
+* checking Rd cross-references ... WARNING
+Unknown package ‘<pkg>’ in Rd xrefs
+* checking for missing documentation entries ... WARNING
+Undocumented code objects:
+  ‘r2t.getRealTimestamp’ ‘r2t.getRowBaseTimestamp’ ‘r2t.job’
+  ‘r2t.setHbaseClient’ ‘r2t.toValue’ ‘r2t.todelta’
+All user-level objects in a package should have documentation entries.
+See the chapter ‘Writing R documentation files’ in the ‘Writing R
+Extensions’ manual.
+* checking for code/documentation mismatches ... WARNING
+Functions or methods with usage in documentation object 'r2t.rhwatch' but not in code:
+  r2t.rhwatch
+
+Codoc mismatches from documentation object 'r2t.getRowKey':
+r2t.getRowBaseTimestamp
+  Code: function(rowkey)
+  Docs: function(x)
+  Argument names in code not in docs:
+    rowkey
+  Argument names in docs not in code:
+    x
+  Mismatches in argument names:
+    Position: 1 Code: rowkey Docs: x
+
+* checking Rd \usage sections ... WARNING
+Undocumented arguments in documentation object 'r2t.getBaseTimestamp'
+  ‘basetimestamp’ ‘delta’
+Documented arguments not in \usage in documentation object 'r2t.getBaseTimestamp':
+  ‘rowkey’
+Objects in \usage without \alias in documentation object 'r2t.getBaseTimestamp':
+  ‘r2t.getRealTimestamp’
+
+Undocumented arguments in documentation object 'r2t.getRowKey'
+  ‘x’
+Documented arguments not in \usage in documentation object 'r2t.getRowKey':
+  ‘sdate’ ‘edate’ ‘tagk’ ‘tagv’ ‘metrics’
+Objects in \usage without \alias in documentation object 'r2t.getRowKey':
+  ‘r2t.getRowBaseTimestamp’
+
+Functions with \usage entries need to have the appropriate \alias
+entries, and all their arguments documented.
+The \usage entries must correspond to syntactically valid R code.
+See the chapter ‘Writing R documentation files’ in the ‘Writing R
+Extensions’ manual.
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking examples ... OK
+* checking PDF version of manual ... OK
+WARNING: There were 8 warnings.
+NOTE: There was 1 note.
+See
+  ‘/home/bikash/repos/r2time/r2time.Rcheck/00check.log’
+for details.

@@ -49,8 +49,8 @@ map <- expression({
     library(gtools)
 	m <- lapply(seq_along(map.values), function(r) {
         v <- r2t.toFloat(map.values[[r]][[1]])
-        k1<-r2t.getRowBaseTimestamp(map.keys[[r]])
-        k <-r2t.getRealTimestamp(k1,map.values[[r]])
+        k1<- r2t.getRowBaseTimestamp(map.keys[[r]])
+        k <- r2t.getRealTimestamp(k1,map.values[[r]])
         a <- list(k,v)
 	})
     y = matrix(unlist(m), ncol=2, byrow=TRUE)
@@ -80,18 +80,6 @@ map <- expression({
 		rhcollect(c2,d2)
 	}
  })
-
-# Reduce function to calculate to final centroid.
-# reduce<-expression(
-# 	pre = { collect<-NULL } ,
-# 	reduce = {
-#             collect<-rbind(collect,do.call("rbind",reduce.values))
-#             },
-#     post = {
-#             rhcollect(reduce.key,collect)
-#            }
-#  )
-
 
 ## create inital centroids with k =2 choosen randomly
 c1 <-c(1392739733,5.47)

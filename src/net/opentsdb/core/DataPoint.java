@@ -41,7 +41,7 @@ public interface DataPoint {
   /**
    * Returns the value of the this data point as a {@code double}.
    * @throws ClassCastException if the {@code isInteger() == true}.
-   */
+   */ 
   double doubleValue();
 
   /**

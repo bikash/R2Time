@@ -1,6 +1,7 @@
 
 
 import java.io.IOException;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.KeyValue;
@@ -22,7 +23,7 @@ import org.godhuli.rhipe.RHRaw;
  * Average of data points in OpenTSDB
  * 
  * 
- */
+*/
 public class MR {
 
     static class Mapper1 extends TableMapper<IntWritable, FloatWritable> {
@@ -32,13 +33,14 @@ public class MR {
         private static byte [] TS = new byte[4];
         private final FloatWritable VALUE = new FloatWritable(1);
         public void map(ImmutableBytesWritable row, Result values, Context context) throws IOException {
-        	 System.arraycopy(row.get(), 3, TS, 0, 4); 
+        	
+        	 System.arraycopy(row.get(), 3, TS, 0, 4);  // get timestamp from row key
              for (KeyValue kv : values.raw()) {
-             	final short delta = (short) (( org.apache.hadoop.hbase.util.Bytes.toShort(kv.getQualifier()) & 0xFFFF) >>> 4);
-             	int timestamp = org.apache.hadoop.hbase.util.Bytes.toInt(TS)+ delta;	
-           	    //System.out.print("\n Base Timestamp as Rowkey => "+ org.apache.hadoop.hbase.util.Bytes.toInt(TS) + " -- Timestamp " + timestamp +  "\n");   
-           	   // System.out.print("Value " + org.apache.hadoop.hbase.util.Bytes.toFloat(kv.getValue() )+ "\n");   
-           	    VALUE.set(org.apache.hadoop.hbase.util.Bytes.toFloat(kv.getValue()));
+             	//final short delta = (short) (( org.apache.hadoop.hbase.util.Bytes.toShort(kv.getQualifier()) & 0xFFFF) >>> 4);
+             	//int timestamp = org.apache.hadoop.hbase.util.Bytes.toInt(TS)+ delta;	
+           	    //System.out.print("\nBase Timestamp as Rowkey => "+ org.apache.hadoop.hbase.util.Bytes.toInt(TS) + " -- Timestamp " + timestamp +  "\n");   
+           	    //System.out.print("Value " + org.apache.hadoop.hbase.util.Bytes.toLong(kv.getValue() )+ "\n");   
+           	    VALUE.set(org.apache.hadoop.hbase.util.Bytes.toLong(kv.getValue()));
            	    //KEY.set(timestamp);
            	    try {
            	    	context.write(KEY,VALUE); //Define key as 1 same for every values
@@ -50,38 +52,7 @@ public class MR {
              }
         }
     }
-// 	  generate keyvalue
-//    private static Put resultToPut(ImmutableBytesWritable row, Result values) throws IOException {
-//    	 Put put = new Put(row.get());
-//    	 byte [] TS = new byte[4];
-//    	 System.arraycopy(row.get(), 3, TS, 0, 4); 
-//         for (KeyValue kv : values.raw()) {
-//         	final short delta = (short) (( org.apache.hadoop.hbase.util.Bytes.toShort(kv.getQualifier()) & 0xFFFF) >>> 4);
-//         	int timestamp = org.apache.hadoop.hbase.util.Bytes.toInt(TS)+ delta;	
-//       	    System.out.print("\n Base Timestamp as Rowkey=> "+ org.apache.hadoop.hbase.util.Bytes.toInt(TS) + " -- Timestamp " + timestamp +  "\n");   
-//       	    System.out.print("Value " + org.apache.hadoop.hbase.util.Bytes.toFloat(kv.getValue() )+ "\n");   
-//         	put.add(kv);
-//         }
-//        return put;
-//    }
 
-//    public static class Reducer1 extends Reducer<IntWritable, FloatWritable, IntWritable, FloatWritable> {
-//        private static final IntWritable KEY = new IntWritable(1);
-//        private final FloatWritable VALUE = new FloatWritable(1);
-//        public void reduce(IntWritable key, Iterable<FloatWritable> values, Context context)
-//                throws IOException, InterruptedException {
-//        	int sum = 0;
-//            for (FloatWritable val : values) {
-//                sum += val.get();
-//            }
-//            VALUE.set(sum);
-//            context.write(KEY, VALUE);
-//           // Put put = new Put(key.get());
-//           //put.add(Bytes.toBytes("details"), Bytes.toBytes("total"), Bytes.toBytes(sum));
-//           // System.out.println(String.format("stats :   key : %d,  count : %d", Bytes.toInt(key.get()), sum));
-//           // context.write(key, values);
-//        }
-//    }
     
     public static class MyReducer extends  TableReducer<IntWritable, FloatWritable, ImmutableBytesWritable> {
     	public static final byte[] CF = "cf".getBytes();
@@ -89,29 +60,47 @@ public class MR {
     	@Override
 		 public void reduce(IntWritable key, Iterable<FloatWritable> values, Context context) 
 				 throws IOException, InterruptedException {
-		    int sum = 0;
+		    //int sum = 0;
 		    int count =0;
 		    for (FloatWritable value : values) {
-		       sum += value.get();
+		       //sum += value.get();
 		       count++;
 		    }
-		    float avg = sum/count;
+		    //float avg = sum/count;
 		    Put put = new Put(org.apache.hadoop.hbase.util.Bytes.toBytes(key.get()));
 	
 		   // put.add org.apache.hadoop.hbase.util.Bytes.toBytes(sum));
-		    System.out.print("Sum value => " + avg+ "\n");  
-		    put.add(org.apache.hadoop.hbase.util.Bytes.toBytes("number"), org.apache.hadoop.hbase.util.Bytes.toBytes(""), org.apache.hadoop.hbase.util.Bytes.toBytes(avg));
+		    //System.out.print("Mean value => " + avg+ "\n");  
+		    System.out.print("Total data point => " + count+ "\n");
+		    put.add(org.apache.hadoop.hbase.util.Bytes.toBytes("number"), org.apache.hadoop.hbase.util.Bytes.toBytes(""), org.apache.hadoop.hbase.util.Bytes.toBytes(count));
 		    context.write(null, put);
 		 }
     }
     
-   public static void main(String[] args) throws Exception {
+   @SuppressWarnings("deprecation")
+public static void main(String[] args) throws Exception {
 //	    Configuration config = new Configuration();
 //	    config.set("fs.default.name", "hdfs://home/bikash/tmp");
 //	    config.set("mapred.job.tracker", "localhost:50030/");
-	   
+// "1973/01/01-00:00:00" "2014/07/22-10:00:00" "r2time.load.test1" "haisen24.ux.uis.no"
+	   String sdate 	= "1973/01/01-00:00:00";
+	   String edate 	= "1975/01/01-01:00:00";
+	   String metric	= "r2time.load.test1";
+	   String zookeeper = "haisen24.ux.uis.no";
+	   if (args.length > 0) {
+		   sdate 		= args[0];
+		   edate 		= args[1];
+		   metric 		= args[2];
+		   zookeeper 	= args[3];
+	   }
+	   else
+	   {
+		   System.err.println("Please enter the start data, end data, metric and zookeeper.");
+	       System.exit(1); 
+	   }
+	    
 	    Configuration conf = HBaseConfiguration.create();
-	    String zookeeperQuorum = "haisen24.ux.uis.no";
+	    String zookeeperQuorum = zookeeper;
 	    String HBaseMaster = "haisen23.ux.uis.no:60000";
 //	    String zookeeperQuorum = "localhost";
 //	    String HBaseMaster = "localhost:60000";
@@ -130,7 +119,7 @@ public class MR {
     	String[] tagk = {"1","host"};
         String[] tagv = {"1","*"};
         
-    	String[] val =  DataType.getRowkeyFilter("1980/01/01-00:00:00","2014/02/22-10:00:00", "r2time.stress.test",  tagk, tagv);
+    	String[] val =  DataType.getRowkeyFilter(sdate,edate,metric,tagk, tagv);
     	Scan scans = new Scan();
     	scans.setStartRow(org.apache.commons.codec.binary.Base64.decodeBase64(val[0]));
         scans.setStopRow(org.apache.commons.codec.binary.Base64.decodeBase64(val[1]));    
