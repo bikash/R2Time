@@ -1,7 +1,7 @@
 R2Time connector for R to Hbase for time-series data stored by OpenTSDB.  
 
 
-#Prerequisite Installation for R2Time.
+##Prerequisite Installation for R2Time.##
 1. RHIPE
 Installation steps are mention in the following link:
 https://www.datadr.org/install.html
@@ -13,7 +13,7 @@ http://opentsdb.net/docs/build/html/installation.html#id1
 Check OpenTSDB is runing successfully.
 IP:4242
 
-#Installation of R2Time.
+##Installation of R2Time.##
 ```
 1. Download R2Time https://github.com/bikash/R2Time/releases/tag/V.1
 2. $ R CMD INSTALL r2time_1.0.tar.gz
@@ -30,9 +30,9 @@ $ R
 > rhput("src_location_asynchbase_jar", "hdfs_location")
 ```
 
-R2time.jar can be download from GitHUB
+R2time.jar can be downloaded from GitHUB
 
-#Example:
+###Example:###
 Now running simple count example in R2Time.
 
 ```
