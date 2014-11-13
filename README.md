@@ -31,7 +31,7 @@ R2time.jar can be download from GitHUB
 #Example:
 Now running simple count example in R2Time.
 
-
+```
 Load all the necessary libraries
 1. library(r2time)
 2. library(Rhipe)
@@ -81,7 +81,7 @@ Load all the necessary libraries
 43. ## Run job.
 44. r2t.job(table='tsdb',sdate=startdate, edate=enddate, metrics=metric, tagk=tagk, tagv=tagv, jars=jars, zooinfo=zooinfo,	output=outputdir, jobname=jobname, mapred=mapred, map=map, reduce=reduce, setup=NULL)
 45. t = rhread(outputdir)
-
+```
 
 
 
