@@ -33,65 +33,54 @@ Now running simple count example in R2Time.
 
 
 Load all the necessary libraries
-library(r2time)
-library(Rhipe)
-rhinit()	## Initialize rhipe framework.
-library(rJava)
-.jinit()    ## Initialize rJava
-r2t.init()  ## Initialize R2Time  framework.
-library(bitops) ## Load library for bits operation, It is used for conversion between float and integer numbers.
-library(gtools)
+1. library(r2time)
+2. library(Rhipe)
+3. rhinit()	## Initialize rhipe framework.
+4. library(rJava)
+5. .jinit()    ## Initialize rJava
+6. r2t.init()  ## Initialize R2Time  framework.
+7. library(bitops) ## Load library for bits operation, It is used for conversion between float and integer numbers.
+8. library(gtools)
 
 
-tagk = c("host") ## Tag keys. It could be list
-tagv = c("*")	## Tag values. It could be list or can be separate multiple by pipe
-metric = 'r2time.load.test1' ## Assign multiple metrics
-startdate ='2000/01/01-00:00:00' ## Start datetime of timeseries
-enddate ="2003/01/31-10:00:00"   ## END datetime of timeseries
+9. tagk = c("host") ## Tag keys. It could be list
+10. tagv = c("*")	## Tag values. It could be list or can be separate multiple by pipe
+11. metric = 'r2time.load.test1' ## Assign multiple metrics
+12. startdate ='2000/01/01-00:00:00' ## Start datetime of timeseries
+13. enddate ="2003/01/31-10:00:00"   ## END datetime of timeseries
+14. outputdir = "/home/bikash/tmp/mean/ex1.1" ## Output file location , should be in HDFS file system.
+15. jobname= "Calculation for number of DP for 75 million Data points with 2 node" ## Assign relevant job description name.
+16. mapred <- list(mapred.reduce.tasks=0) ## Mapreduce configuration, you can assign number of mapper and reducer for a task. For this case is 0, no reducer is required.
+17. #Location of jar file in HDFS file system. Replace "/home/ekstern/haisen/bikash/tmp/r2time.jar" with your required hdfs_location of jar files.
+18. jars=c("/home/ekstern/haisen/bikash/tmp/r2time.jar","/home/ekstern/haisen/bikash/tmp/zookeeper.jar", "/home/ekstern/haisen/bikash/tmp/hbase.jar")
+19. # This jars need to be in HDFS file system. You can copy jar in HDFS using RHIPE rhput command
+ 
+21. ## Assign Zookeeper configuration. For HBase to read data zookeeper quorum must be define.
+22. zooinfo=list(zookeeper.znode.parent='/hbase',hbase.zookeeper.quorum='haisen24.ux.uis.no')
+ 
+24. ## running map function to caculate centroid
+25. map <- expression({
+	26. library(bitops)
+	27. library(r2time)
+	28. library(gtools)
+	29. len <- 0
+	30. m <- lapply(seq_along(map.values), function(r) {
+	31. 	attr <- names(map.values[[r]]);
+	32. 	leng <-  length(attr)
+	33. 	})
+	34. 	rhcollect(1,sum(unlist(m)))
+35. })
 
-outputdir = "/home/bikash/tmp/mean/ex1.1" ## Output file location , should be in HDFS file system.
-jobname= "Calculation for number of DP for 75 million Data points with 2 node" ## Assign relevant job description name.
-
-mapred <- list(mapred.reduce.tasks=0) ## Mapreduce configuration, you can assign number of mapper and reducer for a task. For this case is 0, no reducer is required.
-
-#Location of jar file in HDFS file system. Replace "/home/ekstern/haisen/bikash/tmp/r2time.jar" with your required hdfs_location of jar files.
-jars=c("/home/ekstern/haisen/bikash/tmp/r2time.jar","/home/ekstern/haisen/bikash/tmp/zookeeper.jar", "/home/ekstern/haisen/bikash/tmp/hbase.jar")
-# This jars need to be in HDFS file system. You can copy jar in HDFS using RHIPE rhput command
-
-## Assign Zookeeper configuration. For HBase to read data zookeeper quorum must be define.
-zooinfo=list(zookeeper.znode.parent='/hbase',hbase.zookeeper.quorum='haisen24.ux.uis.no')
-
-
-## running map function to caculate centroid
-map <- expression({
-    library(bitops)
-    library(r2time)
-    library(gtools)
-    len <- 0
-    m <- lapply(seq_along(map.values), function(r) {
-        attr <- names(map.values[[r]]);
-        leng <-  length(attr)
-    })
-    rhcollect(1,sum(unlist(m)))
- })
-
-#Reduce function to calculate to final centroid.
-reduce <- expression(
-   pre={
-      len <- 0
-   },
-   reduce={
-      len <- len + sum(sapply(reduce.values, function(x) sum(x)))
-   },
-   post={
-      rhcollect(reduce.key, len)
-})
-
-## Run job.
-r2t.job(table='tsdb',sdate=startdate, edate=enddate, metrics=metric, tagk=tagk, tagv=tagv, jars=jars, zooinfo=zooinfo,
-    	output=outputdir, jobname=jobname, mapred=mapred, map=map, reduce=reduce, setup=NULL)
-
-t = rhread(outputdir)
+36. #Reduce function to calculate to final centroid.
+37. reduce <- expression(
+	38. pre={ len <- 0 }, 
+	39. reduce={ len <- len + sum(sapply(reduce.values, function(x) sum(x))) }
+	40. post={ rhcollect(reduce.key, len)
+41. })
+ 
+43. ## Run job.
+44. r2t.job(table='tsdb',sdate=startdate, edate=enddate, metrics=metric, tagk=tagk, tagv=tagv, jars=jars, zooinfo=zooinfo,	output=outputdir, jobname=jobname, mapred=mapred, map=map, reduce=reduce, setup=NULL)
+45. t = rhread(outputdir)
 
 
 
