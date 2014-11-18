@@ -90,4 +90,23 @@ t = rhread(outputdir)
 ```
 
 
+### LIST OF FUNCTIONS ###
 
+r2t.job:
+Submit job to MapReduce. 
+Input Parameters:
+```
+table = name of the table by default 'tsdb'
+sdate = Start data of metric
+edate = End date of Metric
+Metrics= Name of metric
+tagk = List of tag keys
+tagv = List of tag values
+jars = list of jars files in HDFS location
+output = Path of output result to be stored in HDFS.
+zooinfo = Zookeeper informations
+jobname = Name of job by default MapReduce Job
+map = name of map function
+reduce = name of reduce function, if no reduce assign 0
+setup = initialization function need before map function. 
+```
