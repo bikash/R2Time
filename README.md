@@ -11,7 +11,7 @@ Installation steps are mention in the following link:
 http://opentsdb.net/docs/build/html/installation.html#id1
 
 Check OpenTSDB is runing successfully.
-IP:4242
+```http://127.0.0.1:4242```
 
 ##Installation of R2Time.##
 ```
