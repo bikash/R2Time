@@ -1,6 +1,6 @@
 R2Time connector for R to Hbase for time-series data stored by OpenTSDB.  
 
-###Reading Implementation for R2Time:###
+###Implementation for R2Time:###
 ```
 Master Thesis: 
 http://brage.bibsys.no/xmlui/handle/11250/181819
