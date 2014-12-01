@@ -2,9 +2,7 @@ R2Time connector for R to Hbase for time-series data stored by OpenTSDB.
 Analyzing time-series datasets at a massive scale is one of the biggest challenges that data scientists are facing.
  This implementation of a tool is used for analyzing large time-series data.
  It describes a way to analyze the data stored by OpenTSDB. OpenTSDB is an open
- source distributed and scalable time series database. It has become a challenge for
- statisticians and data scientists to analyze such massive data sets with the same level
- of comprehensive details as is possible for smaller analyses.
+ source distributed and scalable time series database. 
  Currently tools available for time-series analysis are time and memory consuming.
  Moreover, no single tool exists that specializes on providing an efficient implementations
  of analyzing time-series data through MapReduce programming model at massive
