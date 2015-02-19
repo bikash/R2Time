@@ -15,7 +15,7 @@ Master Thesis:
 http://brage.bibsys.no/xmlui/handle/11250/181819
 
 Published Paper CloudCom 2014:
-under publication()
+http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=7037792
 ```
 
 ##Prerequisite Installation for R2Time.##
