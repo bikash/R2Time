@@ -127,3 +127,4 @@ map = name of map function
 reduce = name of reduce function, if no reduce assign 0
 setup = initialization function need before map function. 
 ```
+
